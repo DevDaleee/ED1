@@ -1,51 +1,71 @@
 #include <stdio.h>
-#include <time.h>
+#include <math.h>
 #include <stdlib.h>
 
-int **preencherMatriz(int col, int lin){
-
-    int **mat;
-    mat = (int **) calloc(lin, sizeof(int*));
-
-    for (int i = 0; i < lin; i++){
-        mat[i] = (int*)malloc(sizeof(int) * col);
-    }
-
-    for (int i = 0; i < lin; i++){
-        for (int j = 0; j < col; j++){
-            mat[lin][col] =  rand() % 256;
-        }
-    }
-
-    return mat;
-    
-}
-int *maiorMenorMedia(int col, int lin, int **mat){
-    int maior, menor, count;
-}
-void montarDados(int lin, int col, int **m){
-    for (int i = 0; i < lin; i++){
-        for (int j = 0; j < col; j++){
-            printf("%d", m[lin][col]);
-        }
-        printf("\n");
-    }
+//funcao que retorna a distancia euclidiana de um ponto 
+float distancia(int x1, int x2, int y1, int y2, int z1, int z2){
+	int diffX, diffY, diffZ;
+	diffX = pow(x2 - x1, 2);
+	diffY = pow(y2 - y1, 2);
+	diffZ = pow(z2 - z1, 2);
+	return sqrt(diffX + diffY + diffZ);
 }
 
-void liberarMemoria(int **m, int t ){
-    for (int i = 0; i < t; i++){
-        free(m[i]);
-    }
-    free(m);
-    
-}
-void montarMaiorMenorMedia(int *val, int t){
+int ***preencherCubo(int profundidade, int altura, int largura){
 
+	int ***cubo;
+	//alocando o espaco de memoria para o CUBO
+	cubo = (int ***) malloc(profundidade * sizeof(int **));
+	for (int i = 0; i < profundidade; ++i)
+		cubo[i] = (int **) malloc(sizeof(int *) * altura);
+
+	for (int i = 0; i < profundidade; ++i)
+		for (int j = 0; j < altura; ++j)
+			cubo[i][j] = (int *) malloc(sizeof(int) * largura);
+	
+	//preenchendo o cubo com valores randomicos de 0 - 255
+	for (int i = 0; i < profundidade; ++i)
+		for (int j = 0; j < altura; ++j)
+			for (int x = 0; x < largura; ++x){
+				cubo[i][j][x] = 0;
+			}
+	
+	//tentando gerar uma esfera dentro do CUBO
+	int raio = 6;
+	int xc, yc, zc;
+	xc = largura / 2;
+	yc = altura / 2;
+	zc = profundidade / 2;
+	for (int z = 0; z < profundidade; ++z){
+		for (int y = 0; y < altura; ++y){
+			for (int x = 0; x < largura; ++x){
+				if (distancia(xc, x, yc, y, zc, z) < raio){
+					cubo[z][y][x] = 1;
+				}
+			}
+		}	
+	}	
+
+	//retornando o espaco de memoria alocado e preenchido
+	return cubo;
 }
 
-void main(){
-    srand(time(NULL));
-    int **m;
-    m  = preencherMatriz(10,5);
-    
+void mostrarCubo(int largura, int altura, int profundidade, int ***cubo){
+	for (int i = 0; i < profundidade; ++i){
+		for (int j = 0; j < altura; ++j){
+			for (int x = 0; x < largura; ++x){
+				printf("%d ", cubo[i][j][x]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+}
+
+
+int main(){
+	int ***c, largura = 15, altura = 15, profundidade = 10;
+	c = preencherCubo(profundidade, altura, largura);
+	mostrarCubo(largura, altura, profundidade, c);
+	return 0;
 }
