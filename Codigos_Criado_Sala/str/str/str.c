@@ -42,7 +42,7 @@ char *mystrcat(char *str1, char *str2){
     }
     *start = '\0';
 
-    return str1;
+    return start;
 }
 
 int tamanhoStr(char *str){
