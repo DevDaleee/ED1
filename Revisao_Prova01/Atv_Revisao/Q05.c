@@ -5,22 +5,3 @@ principal). Depois crie uma função que receba este ponteiro e preencha os dado
 estrutura e também uma uma função que receba este ponteiro e imprima os dados da
 estrutura. Finalmente, faça a chamada a esta função na função principal. 
 */
-
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct pessoa{
-    char nome; 
-    int data_nasc;
-    int cpf;
-};
-
-void preencher(FloatVector *vec, char nome, int data_nasc, int cpf){
-
-    vec->nome
-}
-
-int main(){
-
-}
-

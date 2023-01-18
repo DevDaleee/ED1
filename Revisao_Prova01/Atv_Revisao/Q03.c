@@ -17,8 +17,8 @@ int **preencherMatriz(int lin, int col){
 	int **mat;
 	mat = (int **) calloc(lin, sizeof(int*));
 	for (int i = 0; i < lin; ++i){
-			mat[i] = (int *) malloc(sizeof(int) * col);
-	}	
+		mat[i] = (int *) malloc(sizeof(int) * col);
+	}
 	return mat;
 }
 

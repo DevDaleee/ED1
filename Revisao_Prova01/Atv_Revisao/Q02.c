@@ -8,22 +8,20 @@ chamar a função de impressão dos n elementos do vetor criado e, finalmente, l
 memória alocada através da função criada para liberação.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-int *alocar(int n);
-void liberarMemoria(int *vetor);
-void print(int *vetor, int n);
-
 int *alocar(int n){
     int *vetor;
-    vetor =(int *) malloc(sizeof(int) * n);
+    vetor = (int *) malloc(n * sizeof(int));
     return vetor;
 }
-
-void print(int *vetor, int n){
+void preencher(int n, int *vetor){
     for (int i = 0; i < n; i++){
-        printf("%d", vetor[i]);
+        scanf("%d", &vetor[i]);
+    }
+}
+
+void imprimir(int n, int *vetor){
+    for (int i = 0; i < n; i++){
+        printf("%d ", vetor[i]);
     }
     printf("\n");
 }
@@ -35,12 +33,11 @@ void liberarMemoria(int *vetor){
 int main(){
     int n, *vetor;
     scanf("%d", &n);
+
     vetor = alocar(n);
-    
-    for (int i = 0; i < n; i++){
-        scanf("%d", &vetor[i]);
-    }
-    print(vetor, n);
+    preencher(n, vetor);
+    imprimir(n, vetor);
     liberarMemoria(vetor);
+
     return 0;
 }
