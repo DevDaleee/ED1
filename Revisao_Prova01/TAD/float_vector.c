@@ -10,7 +10,7 @@ struct float_vector{
 /**
  * @brief Cria (aloca) um vetor de floats com uma dada capacidade
  * 
- *  @param capacity Capacidade do vetor
+ * @param capacity Capacidade do vetor
  * @return FloatVector* um vetor de floats alocado/criado
 */
 FloatVector *create(int capacity){
