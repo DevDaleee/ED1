@@ -1,0 +1,18 @@
+
+LISTA CIRCULAR
+O último elemento tem como proximo o primeiro elemento da lista formando um ciclo. 
+A lista pode ser representada por um ponteiro para um elemento incial qualquer da lista.
+Função para imprimir uma lista circular
+
+vista todos os elementos a partir dp ponteiro do elemento incial até alcançar novamente esse mesmo elemento
+Se a lista é vazia, o ponteiro para um elemento incial é NULL
+
+LISTA DUPLAMENTE ENCADEADA
+
+struct lista2{
+    int info;
+    struct lista2* ant;
+    struct lista2* prox;
+};
+
+typedrf struct lista2 Lista2;
