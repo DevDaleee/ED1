@@ -7,7 +7,6 @@ struct conta{
 	float saldo;
 	int num_conta;
 	char nome[100];
-	
 };
 
 Conta *criarListaContasEstatica(int tam){
@@ -17,8 +16,7 @@ Conta *criarListaContasEstatica(int tam){
 
 void inserirElemento(Conta *lista, int p, int t){
 	srand(time(NULL));
-	if (p < t)
-	{
+	if (p < t){
 		scanf("%f", &lista[p].saldo);
 		scanf("%s", lista[p].nome);
 		lista[p].num_conta = rand() % 100 + 10;

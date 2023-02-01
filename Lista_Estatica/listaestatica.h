@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 typedef struct conta Conta;
 
 Conta *criarListaContasEstatica(int tam);
