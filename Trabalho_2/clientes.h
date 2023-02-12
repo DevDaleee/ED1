@@ -1,20 +1,24 @@
-typedef struct cliente Cliente;
-typedef struct endereco Endereco;
+typedef struct _listaClientes ListaClientes;
+typedef struct _enderecoCli EnderecoCli;
+typedef struct _cliente Cliente;
 
+// Funções de criaçãoe e inserção
+ListaClientes* cria_lista_Clientes();
+void adiciona_cliente(ListaClientes *listaClientes);
 
-//Criar e Cadastrar os Clientes na Lista
-Cliente *criarListaClientes();
-Cliente *cadastrarCliente(Cliente *lista);
+// Funções de impressão
+void mostra_clientes(ListaClientes *listaClientes);
+void mostra_cliente(Cliente *cliente);
 
-//Buscar Cliente na Lista por ID
-Cliente *buscarCliente(Cliente *lista, int valor);
+// Funções de verificação
+int verifica_listaClientes(ListaClientes *listaClientes);
+int busca_cliente(ListaClientes *listaClientes, int id_cli);
+int verifica_endereco_clientes(ListaClientes *listaClientes, int id_endereco);
 
-//Liberar Alocação de Memoria
-void liberarLista(Cliente **lista_ref);
+// Funções para remoção e liberação
+void remove_cliente(ListaClientes *listaClientes);
+ListaClientes* libera_listaClientes(ListaClientes *listaClientes);
 
-//Remover Cliente
-Cliente *remover(Cliente *lista, int id);
-
-
-//mostar o conteúdo da lista
-void mostrarLista(Cliente *lista);
+// Funções acessórias
+int gera_id_cliente(ListaClientes *listaClientes);
+Cliente* retorna_Cliente(ListaClientes *listaClientes, int id_cli);
