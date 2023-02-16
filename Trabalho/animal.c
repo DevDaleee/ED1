@@ -17,7 +17,6 @@ Animal *criaListaEncadeadaSimplesAnimais(){
 }
 
 Animal *cadastro(Animal *rebanho){
-	
 	Animal *new = (Animal*) malloc(sizeof(Animal));
 	new->id_animal = rand() % 100 + 10;
 	printf("Sexo - ");
@@ -38,6 +37,7 @@ void adicionarAnimal(Animal *rebanho, Animal *novo) {
 		novo->prox = rebanho;
 	}
 }
+
 Animal *permutasAnimais(Fazenda *origem, Fazenda *destino, int id_animal){
 	Animal *aux = origem->rebanho;
 	Animal *aux2 = destino->rebanho;

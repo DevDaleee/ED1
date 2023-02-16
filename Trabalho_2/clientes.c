@@ -4,121 +4,113 @@
 #include "clientes.h"
 
 typedef struct _listaClientes {
-    Cliente *inicio;
-    Cliente *fim;
+    Cliente *start;
+    Cliente *end;
 }ListaClientes;
 
-typedef struct _enderecoCli{
+typedef struct _endCliente{
     int id_endereco;
-    char rua[50];
-    char bairro[50];
-    int num_casa;
-}EnderecoCli;
+    char rua[60];
+    char bairro[60];
+    int num;
+}EndCliente;
 
 typedef struct _cliente {
-    int id_cli;
-    char nome_cli[50];
-    EnderecoCli enderecoCli;
+    int id_cliente;
+    char nome_cliente[50];
+    EndCliente endCliente;
     Cliente *prox;
 }Cliente;
 
-// Funções de criaçãoe e inserção
-ListaClientes* cria_lista_Clientes() {
+ListaClientes* criarListaClientes() {
     ListaClientes *listaClientes = (ListaClientes *) calloc(sizeof(ListaClientes), 1);
 
-    listaClientes->inicio = NULL;
-    listaClientes->fim = NULL;
+    listaClientes->start = NULL;
+    listaClientes->end = NULL;
     
     return listaClientes;
 }
 
-void adiciona_cliente(ListaClientes *listaClientes) {
-    Cliente *novo = (Cliente *) calloc(sizeof(Cliente), 1);
+void adicionar_cliente(ListaClientes *listaClientes) {
+    Cliente *new = (Cliente *) calloc(sizeof(Cliente), 1);
 
-    // Leitura e atribuição dos dados do clien
+    new->id_cliente = gerar_id_cliente(listaClientes);
 
-    novo->id_cli = gera_id_cliente(listaClientes);
-    printf("%d\n", novo->id_cli);
+    printf("%d\n", new->id_cliente);
     printf("Nome: ");
     setbuf(stdin, NULL);
-    scanf("%s", novo->nome_cli);
+    scanf("%s", new->nome_cliente);
     
-    puts("--Endereco--");
-    novo->enderecoCli.id_endereco = novo->id_cli;
-    printf("Rua: ");
+    puts("____ENDERECO____");
+    new->endCliente.id_endereco = new->id_cliente;
+
+    printf("RUA: ");
     setbuf(stdin, NULL);
-    scanf("%s", novo->enderecoCli.rua);
-    printf("Bairro: ");
+    scanf("%s", new->endCliente.rua);
+    printf("BAIRRO: ");
     setbuf(stdin, NULL);
-    scanf("%s", novo->enderecoCli.bairro);
-    printf("Numero da casa: ");
-    scanf("%d", &novo->enderecoCli.num_casa);
+    scanf("%s", new->endCliente.bairro);
+    printf("Num da casa: ");
+    scanf("%d", &new->endCliente.num);
 
-
-    if (verifica_listaClientes(listaClientes)) {
-        novo->prox = NULL;
-        listaClientes->inicio = novo;
-        listaClientes->fim = novo;
+    if(verificar_clientes(listaClientes)) {
+        new->prox = NULL;
+        listaClientes->start = new;
+        listaClientes->end = new;
     }
-    else {
-        novo->prox = NULL;
-        listaClientes->fim->prox = novo;
-        listaClientes->fim = novo;
+    else{
+        new->prox = NULL;
+        listaClientes->end->prox = new;
+        listaClientes->end = new;
     }
-
-    puts("Cliente adicionado com sucesso!");
+    puts("O cliente foi adicionado!");
 }
+void exibir_clientes(ListaClientes *listaClientes){
 
-// Funções de impressão
-void mostra_clientes(ListaClientes *listaClientes) {
-    if (verifica_listaClientes(listaClientes)) {
-        puts("Lista de clientes esta vazia!");
+    if(verificar_clientes(listaClientes)) {
+        puts("Nao ha clientes cadastrados!");
     }
-    else {
-        Cliente *aux = listaClientes->inicio;
+    else{
+        Cliente *aux = listaClientes->start;
 
         while (aux != NULL) {
-            puts("  LISTA DE CLIENTES  ");
+            puts("____LISTA DE CLIENTES____");
 
-            printf("ID Cliente: %d\n", aux->id_cli);
-            printf("Nome: %s\n", aux->nome_cli);
-            puts("--Endereco--");
-            printf("Rua: %s\n", aux->enderecoCli.rua);
-            printf("Bairro: %s\n", aux->enderecoCli.bairro);
-            printf("Numero: %d\n", aux->enderecoCli.num_casa);
+            printf("id do cliente: %d\n", aux->id_cliente);
+            printf("Nome: %s\n", aux->nome_cliente);
+            puts("____Endereco____");
+            printf("RUA: %s\n", aux->endCliente.rua);
+            printf("BAIRRO: %s\n", aux->endCliente.bairro);
+            printf("NUMERO: %d\n", aux->endCliente.num);
 
             aux = aux->prox;
         }
     }
 }
-
-void mostra_cliente(Cliente *cliente) {
-    printf("Nome: %s\n", cliente->nome_cli);
-    printf("Rua: %s\n", cliente->enderecoCli.rua);
-    printf("Bairro: %s\n", cliente->enderecoCli.bairro);
-    printf("Num da casa: %d\n", cliente->enderecoCli.num_casa);
+void exibir_cliente(Cliente *cliente) {
+    printf("NOME: %s\n", cliente->nome_cliente);
+    printf("RUA: %s\n", cliente->endCliente.rua);
+    printf("BAIRRO: %s\n", cliente->endCliente.bairro);
+    printf("Num da Casa: %d\n", cliente->endCliente.num);
 }
+int verificar_clientes(ListaClientes *listaClientes){  
 
-// Funções de verificação
-int verifica_listaClientes(ListaClientes *listaClientes) {  
-    // verifica se lista de clientes está vazia
-    if (listaClientes->inicio == NULL) {
+    if (listaClientes->start == NULL) {
         return 1;
     }
     else {
         return 0;
     }
 }
-
-int busca_cliente(ListaClientes *listaClientes, int id_cli) {
-    if (verifica_listaClientes(listaClientes)) {
+int buscar_cliente(ListaClientes *listaClientes, int id_cliente) {
+    if (verificar_clientes(listaClientes)){
         return 0;
     }
-    else {
-        Cliente *aux = listaClientes->inicio;
+    else{
+        Cliente *aux = listaClientes->start;
 
         while (aux != NULL) {
-            if (id_cli == aux->id_cli) {
+            if (id_cliente == aux->id_cliente) {
                 return 1;
             }
             aux = aux->prox;
@@ -126,16 +118,15 @@ int busca_cliente(ListaClientes *listaClientes, int id_cli) {
         return 0;
     }
 }
-
-int verifica_endereco_cliente(ListaClientes *listaClientes, int id_endereco) {
-    if (verifica_listaClientes(listaClientes)) {
+int verificar_endereco(ListaClientes *listaClientes, int id_endereco) {
+    if (verificar_clientes(listaClientes)) {
         return 0;
     }
     else {
-        Cliente *aux = listaClientes->inicio;
+        Cliente *aux = listaClientes->start;
 
         while (aux != NULL) {
-            if (aux->enderecoCli.id_endereco == id_endereco) {
+            if (aux->endCliente.id_endereco == id_endereco) {
                 return 1;
             }
             aux = aux->prox;
@@ -143,61 +134,52 @@ int verifica_endereco_cliente(ListaClientes *listaClientes, int id_endereco) {
         return 0;
     }
 }
-
-// Funções para remoção e liberação
-void remove_cliente(ListaClientes *listaClientes) {
-    if (verifica_listaClientes(listaClientes)) {
-        puts("Lista de clientes esta vazia!");
+void remover_cliente(ListaClientes *listaClientes){
+    if(verificar_clientes(listaClientes)) {
+        puts("A lista de clientes esta vazia!");
     }
-    else {
-        int id_cli;
-        printf("ID do cliente a ser removido: ");
-        scanf("%d", &id_cli);
+    else{
+        int id_cliente;
+        printf("id do cliente que deseja remover: ");
+        scanf("%d", &id_cliente);
 
-        // Se o ID existir na lista de clientes, eu removo
-        if (busca_cliente(listaClientes, id_cli)) {
-            Cliente *aux = listaClientes->inicio;
+        if(buscar_cliente(listaClientes, id_cliente)){
+            Cliente *aux = listaClientes->start;
             Cliente *aux2 = NULL;
 
-            while (aux->id_cli != id_cli) {
+            while(aux->id_cliente != id_cliente) {
                 aux2 = aux;
                 aux = aux->prox;
             }
-
-            // Ultimo elemento da lista
-            if (aux == listaClientes->fim) {
+            if(aux == listaClientes->end) {
                 aux2->prox = aux->prox;
-                listaClientes->fim = aux2;
+                listaClientes->end = aux2;
                 free(aux);
                 aux = NULL;
             }
-            // Primeiro elemento da lista
-            else if (listaClientes->inicio == aux) {
-                listaClientes->inicio = aux->prox;
+            else if(listaClientes->start == aux) {
+                listaClientes->start = aux->prox;
                 free(aux);
                 aux = NULL;
             }
-            // Qualquer outro elemento da lista
-            else {
+            else{
                 aux2->prox = aux->prox;
                 free(aux);
                 aux = NULL;
             }
-            puts("Removido com sucesso!!!");
+            puts("Cliente removido!");
         }
-        // Se não existir mostro que não existe o cliente
         else {
-            puts("Cliente não existe!");
+            puts("Este cliente nao existe!");
         }
     }
 }
-
-ListaClientes* libera_listaClientes(ListaClientes *listaClientes) {
-    if (verifica_listaClientes(listaClientes)) {
-        puts("Lista vazia!");
+ListaClientes* liberar_clientes(ListaClientes *listaClientes) {
+    if (verificar_clientes(listaClientes)){
+        puts("A lista esta vazia!");
     }
     else {
-        Cliente *aux = listaClientes->inicio;
+        Cliente *aux = listaClientes->start;
         Cliente *aux2 = NULL;
 
         while (aux != NULL) {
@@ -206,33 +188,27 @@ ListaClientes* libera_listaClientes(ListaClientes *listaClientes) {
             free(aux2);
             aux2 = NULL;
         }
-        listaClientes->inicio = NULL;
-        listaClientes->fim = NULL;
+        listaClientes->start = NULL;
+        listaClientes->end = NULL;
         free(listaClientes);
         listaClientes = NULL;
         return listaClientes;
     }
 }
+int gerar_id_cliente(ListaClientes *listaClientes) {
+    int id_cliente;
 
-// Funções acessórias
-int gera_id_cliente(ListaClientes *listaClientes) {
-    int id_cli;
-
-    // Gero ID do cliente enquanto existir um igual na lista de clientes, até que gere
-    // um que não exista
-    do
-    {
-        id_cli = rand() % 10000;
-    } while (busca_cliente(listaClientes, id_cli) == 1);
+    do{
+        id_cliente = rand() % 10000;
+    } while (buscar_cliente(listaClientes, id_cliente) == 1);
     
-    return id_cli;
+    return id_cliente;
 }
-
-Cliente* retorna_Cliente(ListaClientes *listaClientes, int id_cli) {
-    Cliente *aux = listaClientes->inicio;
+Cliente* retornar_Cliente(ListaClientes *listaClientes, int id_cliente) {
+    Cliente *aux = listaClientes->start;
 
     while (aux != NULL) {
-        if (aux->id_cli == id_cli) {
+        if (aux->id_cliente == id_cliente) {
             return aux;
         }
         aux = aux->prox;

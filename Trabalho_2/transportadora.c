@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "transportadora.h"
+#include "entregas.h"
 
 typedef struct _transportadora {
     ListaClientes *listaClientes;
     Entrega *FilaEntregas;
-    NewTry *PilhaEntregasNot;
-    FifoDevol *FilaDevolucaoProd;
+    NewTry *PilhaTentativas;
+    FifoDevol *FilaDevolucao;
     float score1;
     float score2;
     float score3;
@@ -14,13 +15,13 @@ typedef struct _transportadora {
     float scoreTot; 
 } Transportadora;
 
-    Transportadora* cria_transportadora() {
+Transportadora* cria_transportadora() {
     Transportadora *transp = (Transportadora *) calloc(sizeof(Transportadora), 1);
 
-    transp->listaClientes = cria_lista_Clientes();
-    transp->FilaEntregas = cria_FilaEntregas();
-    transp->PilhaEntregasNot = cria_PilhaEntregaNot();
-    transp->FilaDevolucaoProd = cria_FilaDevolucaoProd();
+    transp->listaClientes = criarListaClientes();
+    transp->FilaEntregas = criaFila();
+    transp->PilhaTentativas = criaPilhaNewtry();
+    transp->FilaDevolucao = cria_FilaDevolucaoProd();
 
     return transp;
 }
@@ -42,7 +43,7 @@ void cadastrar_entrega(Transportadora *transp) {
 
     if (verifica_endereco(transp->listaClientes, id_endereco)) {
         Cliente *cliente = retorna_Cliente(transp->listaClientes, id_endereco);
-        adiciona_entrega(transp->FilaEntregas, id_endereco, &produto, cliente);
+        addEntrega(transp->FilaEntregas, id_endereco, &produto, cliente);
         puts("Entrega cadastrada!");
     }
     else {
@@ -53,7 +54,7 @@ void cadastrar_entrega(Transportadora *transp) {
 void efetuar_entrega(Transportadora *transp) {
     int StatusPresenca = -1;
 
-    mostrar_entrega(transp->FilaEntregas);
+    imprimirEntregas(transp->FilaEntregas);
     
     do
     {
@@ -74,21 +75,21 @@ void efetuar_entrega(Transportadora *transp) {
     }
     else if(StatusPresenca == 0) {
         if (verifica_EntregasIguais(transp->FilaEntregas)) {
-            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaEntregasNot);
-            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaEntregasNot);      
+            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaTentativas);
+            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaTentativas);      
         }
         else {
-            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaEntregasNot);
+            remova_Fila_AddPilha(transp->FilaEntregas, transp->PilhaTentativas);
         }
     }
 
 }
 
-void cadastrar_PilhaEntregasNot(Transportadora *transp) {
+void cadastrar_PilhaTentativasEntrega(Transportadora *transp) {
     int StatusPresenca = -1;
     puts("Nova tentativa de entrega do produto");
 
-    mostraEntregaNot(transp->PilhaEntregasNot);
+    ImprimirTentativas(transp->PilhaTentativas);
 
     do
     {
@@ -97,12 +98,12 @@ void cadastrar_PilhaEntregasNot(Transportadora *transp) {
     } while (StatusPresenca > 1 || StatusPresenca < 0);
 
     if (StatusPresenca == 1) {
-        if (verifica_pilhaEntregaNot(transp->PilhaEntregasNot)) {
-            remove_PilhaEntregaNot(transp->PilhaEntregasNot);
-            remove_PilhaEntregaNot(transp->PilhaEntregasNot);
+        if (verifica_pilhaNewTry(transp->PilhaTentativas)) {
+            remove_PilhaNewTry(transp->PilhaTentativas);
+            remove_PilhaNewTry(transp->PilhaTentativas);
         } else {
-            remove_PilhaEntregaNot(transp->PilhaEntregasNot);
-        } if (TentativaEntrega(transp->PilhaEntregasNot) == 4) {
+            remove_PilhaNewTry(transp->PilhaTentativas);
+        } if (TentativaEntrega(transp->PilhaTentativas) == 4) {
             transp->score3 += 2;
             transp->scoreTot += transp->score3;
         } else {
@@ -110,27 +111,37 @@ void cadastrar_PilhaEntregasNot(Transportadora *transp) {
             transp->scoreTot += transp->score2;
         }
     } else {
-        int tentativa = TentativaEntrega(transp->PilhaEntregasNot);
+        int tentativa = TentativaEntrega(transp->PilhaTentativas);
 
         if (tentativa == 3) {
             puts("Entrega nao sucedida! Ainda continuara a tentativa de entrega!");
         }
         else {
             puts("Limite de tentativas de entrega excedido! O produto sera adicionado a fila de devolucao.");
-            remove_Pilha_AddFilaDevol(transp->PilhaEntregasNot, transp->FilaDevolucaoProd);
+            remove_Pilha_AddFilaDevol(transp->PilhaTentativas, transp->FilaDevolucao);
             transp->score4 += 0.8;
             transp->scoreTot += transp->score4;
         }
     }
 }
 int verifica_endereco(ListaClientes *listaClientes, int id_endereco) {
-    return verifica_endereco_cliente(listaClientes, id_endereco);
+    return verifica_endereco_clientes(listaClientes, id_endereco);
 }
 void mostrar_scoreTransp(Transportadora *transp) {
-    puts("--- SCORE TRANSPORTADORA ---");
-    printf("N° de pontos - Entregas na 1° tentativa: %d\n", transp->score1);
-    printf("N° de pontos - Entregas na 2° tentativa: %d\n", transp->score2);
-    printf("N° de pontos - Entregas na 3° tentativa: %d\n", transp->score3);
-    printf("N° de pontos - Entregas para fila de devolucao: %d\n", transp->score4);
-    printf("Score total: %d\n", transp->scoreTot);
+    puts("Pontuação Da Transportadora");
+    printf("N° de pontos - Entregas na 1° tentativa: %.1f\n", transp->score1);
+    printf("N° de pontos - Entregas na 2° tentativa: %.1f\n", transp->score2);
+    printf("N° de pontos - Entregas na 3° tentativa: %.1f\n", transp->score3);
+    printf("N° de pontos - Entregas para fila de devolucao: %.1f\n", transp->score4);
+    printf("Score total: %.1f\n", transp->scoreTot);
+}
+
+Transportadora *libera_MemTransportadora(Transportadora *transp) { // Libera memória da struct transportadora e seus correspondentes
+    libera_listaClientes(transp->listaClientes);
+    libera_FilaEntregas(transp->FilaEntregas);
+    libera_PilhaEntregasNot(transp->PilhaTentativas);
+    libera_FilaDevolucao(transp->FilaDevolucao);
+    free(transp);
+    transp = NULL;
+    return transp;
 }

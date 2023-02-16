@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct _fifoE {
+typedef struct fifoE {
     Entrega *inicio;
     Entrega *fim;
 }FifoE;
 
-typedef struct _entrega {
+typedef struct entrega {
     int id_entrega;
     int id_endereco;
     Cliente *cliente;
@@ -18,7 +18,7 @@ typedef struct _entrega {
     Entrega *prox;
 }Entrega;
 
-typedef struct _NewTry{
+typedef struct newTry{
     int id_entrega;
     int tentativa;
     int id_endereco;
@@ -26,12 +26,12 @@ typedef struct _NewTry{
     char produto[50];
     NewTry *prox;
 }NewTry;
-typedef struct _FifoDevol {
+typedef struct fifoDevol {
     DevolProd *inicio;
     DevolProd *fim;
 }FifoDevol;
 
-typedef struct _DevolProd{
+typedef struct devolProd{
     int id_entrega;
     int id_endereco;
     Cliente *cliente;
@@ -39,7 +39,6 @@ typedef struct _DevolProd{
     DevolProd *prox;
 }DevolProd;
 
-// Funções de inserção e criação
 FifoE *criaFila() {
     FifoE *novo = (FifoE *) calloc(sizeof(FifoE), 1);
 
@@ -47,8 +46,8 @@ FifoE *criaFila() {
     novo->fim = NULL;
     return novo;    
 }
-
-void addEntrega(FifoE *fifo, int id_endereco, char *produto, Cliente *cliente){    Entrega *novo = (Entrega *) calloc(sizeof(Entrega), 1);
+void addEntrega(FifoE *fifo, int id_endereco, char *produto, Cliente *cliente){    
+    Entrega *novo = (Entrega *) calloc(sizeof(Entrega), 1);
 
     novo->id_entrega = gera_id_entrega(fifo);
     novo->id_endereco = id_endereco;
@@ -80,7 +79,7 @@ void adiciona_PilhaNewTry(NewTry *PilhaEntregasNot, int id_entrega, int id_ender
     novo->cliente = cliente;
     strcpy(novo->produto, prod);
 
-    if (verifica_pilhaEntregaNewTry(PilhaEntregasNot)) {
+    if (verifica_pilhaNewTry(PilhaEntregasNot)) {
         novo->prox = NULL;
         PilhaEntregasNot = novo;
     }
@@ -117,25 +116,20 @@ void adiciona_FilaDevolucaoProd(FifoDevol *FilaDevolucaoProd, int id_entrega, in
         FilaDevolucaoProd->fim = novo;
     }
 }
-
-// Funções acessórias
 int gera_id_entrega(Entrega *fifo) {
     int id_entrega;
 
-    // gera ID unico para entrega
-    do
-    {
+    do{
         id_entrega = rand() % 10000;
     } while (busca_cliente(fifo, id_entrega) == 1);
     
     return id_entrega;
 }
-
 int TentativaEntrega(NewTry *pilha) {
     NewTry *aux = pilha;
 
     if (verifica_NewTryIguais(aux)) {
-        // Se ainda houve uma tentativa de entrega nao sucedida, eu incremento
+      
         if (aux->tentativa == 2 || aux->tentativa == 3 ) {
             aux->tentativa += 1;
             aux->prox->tentativa += 1;
@@ -147,11 +141,8 @@ int TentativaEntrega(NewTry *pilha) {
             aux->prox->tentativa += 1;
         }   
     }
-    // Se a tentativa ja for superior a 3,  eu terei que remover minha entrega da pilha e adicionar na fila de devolucao
     return aux->tentativa;
 }
-
-// Funções de verificação
 int verifica_filaEntrega(FifoE *fifo) {
     if (fifo->inicio == NULL) {
         return 1;
@@ -159,7 +150,6 @@ int verifica_filaEntrega(FifoE *fifo) {
         return 0;
     }
 }
-
 int verifica_pilhaNewTry(NewTry *pilhaNewTry) {
     if (pilhaNewTry == NULL) {
         return 1;
@@ -168,7 +158,6 @@ int verifica_pilhaNewTry(NewTry *pilhaNewTry) {
         return 0;
     }
 }
-
 int verifica_filaDevolucaoProd(FifoDevol *FilaDevolucaoProd){
     if (FilaDevolucaoProd->inicio == NULL) {
         return 1;
@@ -177,7 +166,6 @@ int verifica_filaDevolucaoProd(FifoDevol *FilaDevolucaoProd){
         return 0;
     }
 }
-
 int verifica_EntregasIguais(FifoE *fifo) {
     Entrega *aux = fifo->inicio;
 
@@ -188,7 +176,6 @@ int verifica_EntregasIguais(FifoE *fifo) {
         return 0;
     }
 }
-
 int verifica_NewTryIguais(NewTry *pilha) {
     NewTry *aux = pilha;
 
@@ -199,8 +186,6 @@ int verifica_NewTryIguais(NewTry *pilha) {
         return 0;
     }
 }
-
-// Funções de remoção
 void remove_FilaEntrega(FifoE *fifo) {
     if (verifica_filaEntrega(fifo)) {
         puts("Nao possui entregas a serem efetuadas!");
@@ -213,7 +198,6 @@ void remove_FilaEntrega(FifoE *fifo) {
         puts("Entrega finalizada!");
     }
 }
-
 void remova_Fila_AddPilha(FifoE *fifo, NewTry *pilha) {
     if (verifica_filaEntrega(fifo)) {
         puts("Nao possui entregas a serem efetuadas!");
@@ -227,7 +211,6 @@ void remova_Fila_AddPilha(FifoE *fifo, NewTry *pilha) {
         puts("Entrega nao efetuada! Adicionada a pilha de entregas!");
     }
 }
-
 void remove_PilhaNewTry(NewTry *pilha) {
     if (verifica_pilhaNewTry(pilha)) {
         puts("Pilha de entrega esta vazia");
@@ -241,7 +224,6 @@ void remove_PilhaNewTry(NewTry *pilha) {
         puts("Entrega finalizada!");
     }
 }
-
 void remove_Pilha_AddFilaDevol(NewTry *PilhaNewTry, FifoDevol *fila) {
     if (verifica_pilhaNewTry(PilhaNewTry)) {
         puts("Nao possui entregas!");
@@ -255,8 +237,6 @@ void remove_Pilha_AddFilaDevol(NewTry *PilhaNewTry, FifoDevol *fila) {
         puts("Entrega adicionada a fila de devolucao!");
     }
 }
-
-// Funções de exibição de dados
 void imprimirEntregas(FifoE *fifo) {
     if (verifica_filaEntrega(fifo)) {
         puts("Nao possui entregas a serem efetuadas!");
@@ -291,7 +271,6 @@ void imprimirEntregas(FifoE *fifo) {
         }
     }
 }
-
 void ImprimirTentativas(NewTry *pilha) {
     if (verifica_pilhaNewTry(pilha)) {
         puts("Nao possui entregas nao efetuadas!");
