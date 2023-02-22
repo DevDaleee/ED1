@@ -105,7 +105,7 @@ void adiciona_FilaDevolucaoProd(FifoDevol *FilaDevolucaoProd, int id_entrega, in
     novo->cliente = cliente;
     strcpy(novo->produto, prod);
 
-    if (verifica_FifoDevol(FilaDevolucaoProd)) {
+    if (FilaDevolucaoProd == NULL) {
         novo->prox = NULL;
         FilaDevolucaoProd->inicio = novo;
         FilaDevolucaoProd->fim = novo;
@@ -116,12 +116,12 @@ void adiciona_FilaDevolucaoProd(FifoDevol *FilaDevolucaoProd, int id_entrega, in
         FilaDevolucaoProd->fim = novo;
     }
 }
-int gera_id_entrega(Entrega *fifo) {
+int gera_id_entrega(FifoE *fifo) {
     int id_entrega;
 
     do{
         id_entrega = rand() % 10000;
-    } while (busca_cliente(fifo, id_entrega) == 1);
+    } while (buscar_cliente(fifo, id_entrega) == 1);
     
     return id_entrega;
 }
@@ -231,7 +231,7 @@ void remove_Pilha_AddFilaDevol(NewTry *PilhaNewTry, FifoDevol *fila) {
     else {
         NewTry *aux = PilhaNewTry;
         PilhaNewTry = aux->prox;
-        adiciona_FifoDevol(fila, aux->id_entrega, aux->id_endereco, aux->produto, aux->cliente);
+        adiciona_FilaDevolucaoProd(fila, aux->id_entrega, aux->id_endereco, aux->produto, aux->cliente);
         free(aux);
         aux = NULL;
         puts("Entrega adicionada a fila de devolucao!");
@@ -252,14 +252,14 @@ void imprimirEntregas(FifoE *fifo) {
             printf("ID Endereco: %d\n", aux->id_endereco);
             printf("Produto: %s\n", aux->produto);
             puts("Cliente");
-            mostra_cliente(aux->cliente);
+            exibir_cliente(aux->cliente);
 
             puts("Entrega");
             printf("ID Entrega: %d\n", aux->prox->id_entrega);
             printf("ID Endereco: %d\n", aux->prox->id_endereco);
             printf("Produto: %s\n", aux->prox->produto);
             puts("Cliente");
-            mostra_cliente(aux->prox->cliente);
+            exibir_cliente(aux->prox->cliente);
         }
         else {
             puts("Entrega");
@@ -267,7 +267,7 @@ void imprimirEntregas(FifoE *fifo) {
             printf("ID Endereco: %d\n", aux->id_endereco);
             printf("Produto: %s\n", aux->produto);
             puts("Cliente");
-            mostra_cliente(aux->cliente);     
+            exibir_cliente(aux->cliente);     
         }
     }
 }
@@ -287,7 +287,7 @@ void ImprimirTentativas(NewTry *pilha) {
             printf("Produto: %s\n", aux->produto);
             printf("Tentativa de entrega de numero: %d\n", aux->tentativa);
             puts("Cliente");
-            mostra_cliente(aux->cliente);
+            exibir_cliente(aux->cliente);
 
             puts("Entrega");
             printf("ID Entrega: %d\n", aux->prox->id_entrega);
@@ -295,7 +295,7 @@ void ImprimirTentativas(NewTry *pilha) {
             printf("Produto: %s\n", aux->prox->produto);
             printf("Tentativa de entrega de numero: %d\n", aux->prox->tentativa);
             puts("Cliente");
-            mostra_cliente(aux->prox->cliente);     
+            exibir_cliente(aux->prox->cliente);     
         }
         else {
             puts("Entrega");
@@ -304,7 +304,7 @@ void ImprimirTentativas(NewTry *pilha) {
             printf("Produto: %s\n", aux->produto);
             printf("Tentativa de entrega de numero: %d\n", aux->tentativa);
             puts("Cliente");
-            mostra_cliente(aux->cliente);
+            exibir_cliente(aux->cliente);
         }
     }
 }

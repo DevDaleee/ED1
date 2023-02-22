@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "transportadora.h"
+#include "clientes.h"
 #include "entregas.h"
 
 typedef struct _transportadora {
@@ -27,7 +28,7 @@ Transportadora* cria_transportadora() {
 }
 
 void cadastrar_cliente(Transportadora *transp) {
-    adiciona_cliente(transp->listaClientes);
+    adicionar_cliente(transp->listaClientes);
 }
 
 void cadastrar_entrega(Transportadora *transp) {
@@ -42,8 +43,8 @@ void cadastrar_entrega(Transportadora *transp) {
     scanf("%d", &id_endereco);
 
     if (verifica_endereco(transp->listaClientes, id_endereco)) {
-        Cliente *cliente = retorna_Cliente(transp->listaClientes, id_endereco);
-        addEntrega(transp->FilaEntregas, id_endereco, &produto, cliente);
+        Cliente *cliente = retornar_Cliente(transp->listaClientes, id_endereco);
+        addEntrega(transp->FilaEntregas, id_endereco, produto, cliente);
         puts("Entrega cadastrada!");
     }
     else {
@@ -125,7 +126,7 @@ void cadastrar_PilhaTentativasEntrega(Transportadora *transp) {
     }
 }
 int verifica_endereco(ListaClientes *listaClientes, int id_endereco) {
-    return verifica_endereco_clientes(listaClientes, id_endereco);
+    return verificar_endereco(listaClientes, id_endereco);
 }
 void mostrar_scoreTransp(Transportadora *transp) {
     puts("Pontuação Da Transportadora");
@@ -137,10 +138,10 @@ void mostrar_scoreTransp(Transportadora *transp) {
 }
 
 Transportadora *libera_MemTransportadora(Transportadora *transp) { // Libera memória da struct transportadora e seus correspondentes
-    libera_listaClientes(transp->listaClientes);
-    libera_FilaEntregas(transp->FilaEntregas);
-    libera_PilhaEntregasNot(transp->PilhaTentativas);
-    libera_FilaDevolucao(transp->FilaDevolucao);
+    liberar_clientes(transp->listaClientes);
+    liberar_FilaEntregas(transp->FilaEntregas);
+    liberar_PilhaEntregasNot(transp->PilhaTentativas);
+    liberar_FilaDevolucao(transp->FilaDevolucao);
     free(transp);
     transp = NULL;
     return transp;

@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include "clientes.h"
-
+#include "entregas.h"
+#include "transportadora.h"
+    
 typedef struct _listaClientes {
     Cliente *start;
     Cliente *end;
@@ -12,7 +14,7 @@ typedef struct _endCliente{
     int id_endereco;
     char rua[60];
     char bairro[60];
-    int num;
+    int num; 
 }EndCliente;
 
 typedef struct _cliente {
@@ -192,7 +194,6 @@ ListaClientes* liberar_clientes(ListaClientes *listaClientes) {
         listaClientes->end = NULL;
         free(listaClientes);
         listaClientes = NULL;
-        return listaClientes;
     }
 }
 int gerar_id_cliente(ListaClientes *listaClientes) {
