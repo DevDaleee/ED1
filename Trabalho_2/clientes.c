@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "transportadora.h"
 #include "clientes.h"
 #include "entregas.h"
-#include "transportadora.h"
     
 typedef struct _listaClientes {
     Cliente *start;
@@ -22,7 +22,7 @@ typedef struct _cliente {
     char nome_cliente[50];
     EndCliente endCliente;
     Cliente *prox;
-}Cliente;
+} Cliente;
 
 ListaClientes* criarListaClientes() {
     ListaClientes *listaClientes = (ListaClientes *) calloc(sizeof(ListaClientes), 1);

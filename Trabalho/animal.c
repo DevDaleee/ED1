@@ -2,6 +2,7 @@
 #include "fazenda.h"
 #include "criador.h"
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 struct animal{
@@ -19,11 +20,12 @@ Animal *criaListaEncadeadaSimplesAnimais(){
 Animal *cadastro(Animal *rebanho){
 	Animal *new = (Animal*) malloc(sizeof(Animal));
 	new->id_animal = rand() % 100 + 10;
-	printf("Sexo - ");
-	scanf("%s", new->sexo);
-	printf("Peso - ");
+	printf("\nSexo - ");
+	getchar();
+	scanf("%c", new->sexo);
+	printf("\nPeso - ");
 	scanf("%f", new->peso);
-	printf("Status - ");
+	printf("\nStatus - ");
 	scanf("%d", &new->status);
 	new->prox = rebanho;
 	return new;
@@ -35,20 +37,6 @@ void adicionarAnimal(Animal *rebanho, Animal *novo) {
 	}
 	else {
 		novo->prox = rebanho;
-	}
-}
-
-Animal *permutasAnimais(Fazenda *origem, Fazenda *destino, int id_animal){
-	Animal *aux = origem->rebanho;
-	Animal *aux2 = destino->rebanho;
-	if (buscarAnimal(aux, id_animal) == 1){
-		Animal *rem = remover(origem, id_animal);
-		rem->id_fazenda = destino->id_fazenda;
-		rem->status = 3;
-		adicionarAnimal(aux2, rem);
-		
-	}else{
-		printf("Erro! Ação não pode ser completada! \n");
 	}
 }
 
@@ -72,10 +60,9 @@ void quantCSexo(Animal *rebanho) {
 	Animal *aux = rebanho;
 
 	while (aux != NULL) {
-		if (aux->sexo == "M") {
+		if (strcmp(aux->sexo, "M") == 0) {
 			masc++;
-		}
-		else if (aux->sexo == "F") {
+		} else if (strcmp(aux->sexo, "F") == 0) {
 			fem++;
 		}
 		printf("Sexo M: %d \n",masc);
@@ -103,14 +90,14 @@ int buscarAnimal(Animal *rebanho, int id_animal) {
 	}
 }
 
-Animal *remove(Fazenda *fazenda, int id_animal) {
-	Animal *aux = fazenda->rebanho;
+Animal *remover(Animal *animais, int id_animal) {
+	Animal *aux = animais;
 	Animal *rem = NULL;
 
-	if (buscar_animal(aux, id_animal) == 1) {
+	if (buscarAnimal(aux, id_animal) == 1) {
 		if (aux->id_animal == id_animal) {
 			rem = aux;
-			fazenda->rebanho = aux->prox;
+			animais = aux->prox;
 		}
 		else {
 			while (aux->prox->id_animal != id_animal) {
@@ -119,8 +106,7 @@ Animal *remove(Fazenda *fazenda, int id_animal) {
 			rem = aux->prox;
 			aux->prox = aux->prox->prox;
 		}
-	}
-	else {
+	} else {
 		fprintf(stderr, "ERRO\n");
 	}
 	return rem;		

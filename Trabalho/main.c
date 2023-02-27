@@ -5,108 +5,103 @@
 #include "criador.h"
 
 int main(){
-    int op, escolha;
-    printf("-*20");
-    printf("Escolha uma opcao:\n");
-    printf("-*20");
-    printf("(1) Acessar pagina Criador.\n");
-    printf("(2) Acessar pagina Fazenda.\n");
-    printf("(3) Acessar pagina Animal.\n");
-    scanf("%d", &op);
 
     Criador *listaCriador = NULL;
-    criarListaDuplaCriadores(listaCriador);
+    criarListaEncadeadaCircularFazendas(listaCriador);
     Fazenda *listaFazenda = NULL;
-    criarListaDuplaCriadores(listaFazenda);
+    criarListaEncadeadaCircularFazendas(listaFazenda);
     Animal *listaAnimal = NULL;
     criarListaDuplaCriadores(listaAnimal);
 
-    switch (op){
-    case 1:
-        printf("-*20");
+    while(1) {    
+        int op, escolha;
+        printf("-------------------------\n");
         printf("Escolha uma opcao:\n");
-        printf("-*20");
-        printf("(1) Cadastrar criador.");
-        printf("(2) Remover criador.");
-        printf("(3) Buscar criador.");
-        scanf("%d", &escolha);
+        printf("-------------------------\n");
+        printf("(1) Acessar pagina Criador.\n");
+        printf("(2) Acessar pagina Fazenda.\n");
+        printf("(3) Acessar pagina Animal.\n");
+        printf("(4) Finzalizar o Programa\n");
+        scanf("%d", &op);
+        
+        if (op == 4){
+            break;
+        }
 
-        if(escolha == 1){
-            cadastrar(listaCriador);
-        }
-        if(escolha == 2){
-            int id;
-            printf("Digite o id do Criador que deseja remover:\n");
-            scanf("%d", &id);
-            removerCriador(listaCriador, id);
-        }
-        if(escolha == 3){
-            int id;
-            printf("Digite o id do Criador que deseja buscar:\n");
-            scanf("%d", &id);
-            buscar(listaCriador, id);
-        }
-        break;
-    case 2:
-            printf("-*20");
+        switch (op){
+        case 1:
+            printf("-------------------------\n");
             printf("Escolha uma opcao:\n");
-            printf("-*20");
-            printf("(1) Cadastrar Fazenda.");
-            printf("(2) Remover Fazenda.");
-            printf("(3) Buscar Fazenda.");
+            printf("-------------------------\n");
+            printf("(1) Cadastrar criador.");
+            printf("(2) Remover criador.");
+            printf("(3) Buscar criador.");
             scanf("%d", &escolha);
 
             if(escolha == 1){
-                cadastrar(listaFazenda);
+                cadastrar_criador(listaCriador);
             }
             if(escolha == 2){
                 int id;
-                printf("Digite o id do Fazenda que deseja remover:\n");
+                printf("Digite o id do Criador que deseja remover:\n");
                 scanf("%d", &id);
-                removerFazenda(listaFazenda, id);
+                removerCriador(listaCriador, id);
             }
             if(escolha == 3){
                 int id;
-                printf("Digite o id do Fazenda que deseja alterar:\n");
+                printf("Digite o id do Criador que deseja buscar:\n");
                 scanf("%d", &id);
-                buscar(listaFazenda, id); 
+                buscar(listaCriador, id);
             }
             break;
-    case 3:
-            printf("-*20");
-            printf("Escolha uma opcao:\n");
-            printf("-*20");
-            printf("(1) Cadastrar Animal.");
-            printf("(2) Permutar Animal.");
-            printf("(3) remover Animal.");
-            scanf("%d", &escolha);
+        case 2:
+                printf("-------------------------\n");
+                printf("Escolha uma opcao:\n");
+                printf("-------------------------\n");
+                printf("(1) Cadastrar Fazenda.");
+                printf("(2) Remover Fazenda.");
+                printf("(3) Buscar Fazenda.");
+                scanf("%d", &escolha);
 
-            if(escolha == 1){
-                cadastrar(listaAnimal);
-            }
-            if(escolha == 2){
-                int id;
-                char origem, destino;
-                printf("Digite o id do Animal que deseja remover:\n");
-                scanf("%d", &id);
-                printf("Qual o local de origem do animal? \n");
-                scanf("%s", &origem);
-                printf("Qual o local de destino do animal? \n");
-                scanf("%s", &destino);
-            
-                permutasAnimais(origem, destino, id);
-            }
-            if(escolha == 3){
-                int id;
-                printf("Digite o id do Animal que deseja remover:\n");
-                scanf("%d", &id);
-                remove(listaAnimal, id);
-            }
+                if(escolha == 1){
+                    cadastrarFazenda(listaFazenda);
+                }
+                if(escolha == 2){
+                    int id;
+                    printf("Digite o id do Fazenda que deseja remover:\n");
+                    scanf("%d", &id);
+                    removerFazenda(listaFazenda, id);
+                }
+                if(escolha == 3){
+                    int id;
+                    printf("Digite o id do Fazenda que deseja alterar:\n");
+                    scanf("%d", &id);
+                    buscarFazenda(listaFazenda, id); 
+                }
+                break;
+        case 3:
+                printf("-------------------------\n");
+                printf("Escolha uma opcao:\n");
+                printf("-------------------------\n");
+                printf("(1) Cadastrar Animal.");
+                printf("(2) remover Animal.");
+                scanf("%d", &escolha);
+
+                if(escolha == 1){
+                    cadastro(listaAnimal);
+                }
+                if(escolha == 2){
+                    int id;
+                    printf("Digite o id do Animal que deseja remover:\n");
+                    scanf("%d", &id);
+                    remover(listaAnimal, id);
+                }
+                break;
+        default:
+            printf("EScolha uma opção válida!");
             break;
-    default:
-        printf("EScolha uma opção válida!");
-        break;
+        }
     }
-    return 0;
+        return 0;
 
 }

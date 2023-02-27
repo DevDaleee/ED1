@@ -4,7 +4,7 @@ typedef struct animal Animal;
 Animal *criaListaEncadeadaSimplesAnimais();
 Animal *cadastro(Animal *rebanho);
 Animal *permutasAnimais(Fazenda *origem, Fazenda *destino, int id_animal);//obervar para atualizar o status do animal na fazenda de destino
-Animal *remove(Fazenda *fazenda, int id_animal);
+Animal *remover(Animal *animais, int id_animal);
 
 
 //Funções Desenvolvidadas pela Dupla

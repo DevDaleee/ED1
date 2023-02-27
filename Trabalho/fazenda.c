@@ -13,9 +13,8 @@ struct fazenda{
 	int id_criador, id_fazenda;
 	char nome[100];
 	Endereco localizacao;
-	float valor_fazenda;//lembrar de atualizar o valor sempre que houver alterações no rebanho
-	Animal *rebanho; // ponteiro para uma lista (verificar no .h do animal que lista é)
-	//ponteiro para permitir o apontamento para o proximo elemento da lista (deve ser circular)
+	float valor_fazenda;
+	Animal *rebanho;
 	struct fazenda *prox;
 };
 
@@ -28,9 +27,7 @@ Fazenda *cadastrarFazenda(Fazenda *fazendas){
 
 	new->id_fazenda = rand() % 1000;
 	printf("Nome: ");
-	getchar();
-	scanf("%[^\n]s", &new->nome);
-	getchar();
+	fgets(new->nome, 100, stdin); 
 	scanf("%s", new->localizacao.cidade);
 	scanf("%s", new->localizacao.estado);
 	scanf("%s", new->localizacao.logradouro);
@@ -130,7 +127,7 @@ int buscarFazenda(Fazenda *fazendas, int id) {
 }
 
 float totalArroba(Fazenda *fazendas) {
-	fazendas->valor_fazenda = 267.5 * conta_arroba(fazendas->rebanho);
+	fazendas->valor_fazenda = 267.5 * calcArroba(fazendas->rebanho);
 }
 
 void quantSexo(Fazenda *fazendas){
@@ -140,7 +137,7 @@ void quantSexo(Fazenda *fazendas){
 
 		while (aux->prox != fazendas) {
 			printf("Fazenda: %s\n", aux->nome);
-			conta_animais_sexo(aux->rebanho);
+			quantSexo(aux->rebanho);
 			aux = aux->prox;
 		}
 	}
@@ -148,18 +145,6 @@ void quantSexo(Fazenda *fazendas){
 		fprintf(stderr, "ERRO\n");
 	}
 }
-
-void listaAnimais(Fazenda *fazendas) {
-	if (fazendas != NULL) {
-		Fazenda *aux = fazendas;
-
-		while (aux->prox != fazendas) {
-			lista_animais_status(aux->rebanho);
-			aux = aux->prox;
-		}
-	}
-}
-
 
 void liberarMemoriaF(Fazenda *fazendas) {
 	if (fazendas != NULL) {

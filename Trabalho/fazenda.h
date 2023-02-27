@@ -13,4 +13,3 @@ void liberarMemoriaF(Fazenda *fazendas);
 void quantSexo(Fazenda *fazendas);
 void calculaPeso(Fazenda *fazendas, int id);
 float totalArroba(Fazenda *fazendas);
-void listaAnimais(Fazenda *fazendas);
