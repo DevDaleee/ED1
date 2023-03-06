@@ -25,6 +25,7 @@ Criador *cadastrar_criador(Criador *criadores) {
 
 	printf("%d\n", new->id_criador);
 	printf("Nome: ");
+	setbuf(stdin, NULL);
 	fgets(new->nome, 100, stdin); 
 	new->fazendas = criarListaEncadeadaCircularFazendas();
 	printf("Patrimonio: ");
@@ -90,7 +91,8 @@ int buscar(Criador *criadores, int id){
 		while (aux != NULL && aux->id_criador != id){
 			aux = aux->prox;
 			if (aux->id_criador == id){
-				return 1;
+				printf("Nome: %s", aux->nome);
+				printf("Patrimonio: %2.f", aux->patrimonio);
 			}
 			
 			if (aux == NULL){
@@ -118,9 +120,9 @@ float calcPatrimonio(Criador *criadores, int id){
 			printf("R$ %2.f\n", aux->patrimonio);
 			return aux->patrimonio;
 		}
-	}
-	
+	}	
 }
+
 void printCriadores(Criador *criadores){
 	printf("\n \t Lista de Criadores: ");
 	while (criadores){

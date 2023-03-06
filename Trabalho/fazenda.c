@@ -28,6 +28,7 @@ Fazenda *cadastrarFazenda(Fazenda *fazendas){
 	new->id_fazenda = rand() % 1000;
 	printf("Nome: ");
 	fgets(new->nome, 100, stdin); 
+	setbuf(stdin, NULL);
 	scanf("%s", new->localizacao.cidade);
 	scanf("%s", new->localizacao.estado);
 	scanf("%s", new->localizacao.logradouro);

@@ -69,7 +69,7 @@ void inserirMeio(Conta *lista, int ant){
 		new->ant = NULL;
 		lista = new;
 	} else {
-		aux = lista;
+		Conta *aux = lista;
 
 		while (aux->prox != ant && aux->prox){
 			aux = aux->prox;
@@ -80,7 +80,8 @@ void inserirMeio(Conta *lista, int ant){
 }
 
 Conta remover(Conta *lista, int numC){
-	Conta *aux, *remover = NULL;
+	Conta *aux = NULL; 
+	Conta *remover = NULL;
 
 	if (lista){
 		if (lista->num_conta == numC){
