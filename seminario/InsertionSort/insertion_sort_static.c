@@ -21,7 +21,7 @@ void InsertionSort(int *lista, int tamanho) {
     int chave;
     int j, i;
     
-    for (i = 0; i < tamanho; i++) {
+    for (i = 1; i < tamanho; i++) {
         chave = lista[i];
         j = i - 1;
 
