@@ -7,12 +7,7 @@ struct float_vector{
     int size;       //  Quantidade de elementos armazenados atualmente
     int *data;      // Vetor de Floats
 };
-/**
- * @brief Cria (aloca) um vetor de floats com uma dada capacidade
- * 
- * @param capacity Capacidade do vetor
- * @return FloatVector* um vetor de floats alocado/criado
-*/
+
 FloatVector *create(int capacity){
     FloatVector *vec = (FloatVector*) calloc(1, sizeof(FloatVector));
     vec->size = 0;
